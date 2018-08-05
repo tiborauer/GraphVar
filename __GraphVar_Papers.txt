@@ -1,0 +1,7 @@
+Journal of Neuroscience Methods (2015):
+GraphVar: A user-friendly toolbox for comprehensive graph analyses of functional brain connectivity.
+
+Journal of Neuroscience Methods (2018):
+GraphVar 2.0: A user-friendly toolbox for machine learning on functional connectivity measures
+
+... also as preprint on arXiv.org: https://arxiv.org/abs/1803.00082

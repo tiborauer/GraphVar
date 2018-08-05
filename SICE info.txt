@@ -1,0 +1,17 @@
+If you want to use SICE as a thresholding function during network construction please use computed COVARIANCE matrices
+(e.g. generate covariance matrices with the "generate connectivity matrix" function)
+
+Additionally to applying the “more traditional” thresholding methods (i.e. significance, relative, absolute), GraphVar offers pipeline construction
+of binary graphs with predefined densities using sparse inverse covariance estimation “SICE”, also known as Gaussian graphical models
+or graphical Lasso (Huang et al., 2010).  This method imposes a “sparsity” constraint on the maximum likelihood estimation of an
+inverse covariance matrix, which leads to reliable estimation of the inverse covariance matrix with small sample sizes
+(i.e., length of the fMRI time series). As compared to partial correlations this method entails the advantage that for reliable
+estimations the sample size of the data  does not need to be substantially larger than the number of nodes (i.e., brain regions)
+modeled in the network (i.e., the number of time points can be close to or even less than the number of brain regions modeled).
+This feature is implemented using “Glasso” (http://statweb.stanford.edu/~tibs/glasso/).
+
+Huang, S., Li, J., Sun, L., Ye, J., Fleisher, A., Wu, T., Chen, K., Reiman, E., 2010. Learning brain connectivity of Alzheimer’s disease by sparse inverse covariance estimation. NeuroImage 50, 935–949. doi:10.1016/j.neuroimage.2009.12.120
+
+
+*********************SPECIAL THANKS TO Hossein Karshenas: hosseinkarshenas at gmail dot com FOR PROVIDING THE COMPILED VERSIONS OF GLASSO***************
+*********************SPECIAL THANKS TO Chao-Gan Yan FOR THIS NICE IDEA***************

@@ -36,20 +36,20 @@ addpath(genpath(source_path))
 workspace_path = [root_path 'workspaces'];
 
 fprintf('Welcome to GraphVar\n')
-fprintf('Release= 2.00 \n')
+fprintf('Release= 2.01b \n')
 fprintf('GraphVar 1.00 was developed by Johann Kruschwitz*, David List*, L. Waller, and Mikael Rubinov; *equal contribution\n')
-fprintf('GraphVar 2.00 was developed by Anastasia Brovkin*, L. Waller*, L. Dorfschmidt*, D. Bdzok* and Johann Kruschwitz*; *equal contribution\n')
+fprintf('GraphVar 2.00 was developed by L. Waller*, Anastasia Brovkin*, L. Dorfschmidt*, D. Bdzok* and Johann Kruschwitz*; *equal contribution\n')
 fprintf('Division of Mind and Brain Research, Department for Psychiatry, Charite Berlin, Germany\n')
 fprintf('Department for General Psychology, Technische Universitaet Dresden TUD, Germany\n')
 fprintf('Brain Mapping Unit, Department of Psychiatry, University of Cambridge, Cambridge, United Kingdom\n')
-fprintf('Funding for this project was provided by the German Research Foundation (DFG) grant SFB940/2 2016\n')
-fprintf('Mail to Authors:  johann.kruschwitz@charite.de; anastasia.brovkin@charite.de; lea.waller@charite.de;\n')
+fprintf('Funding for this project was provided by the German Research Foundation (DFG) grant SFB940/2 2017\n')
+fprintf('Mail to Authors:  johann.kruschwitz@charite.de;\n')
 fprintf('-----------------------------------------------------------\n')
 fprintf('Citing Information:\n')
 fprintf('If you think GraphVar is useful for your work, citing it in your paper would be greatly appreciated.\n')
-fprintf('Please always cite also the first GraphVar publication. i.e., Kruschwitz et al (2015) and Brovkin et al (2018).\n')
+fprintf('Please always cite also the first GraphVar publication. i.e., Kruschwitz et al (2015) and Waller&Brovkin et al (2018).\n')
 fprintf('Reference: Kruschwitz JD, List D, Waller L, Rubinov M, Walter H, GraphVar: A user-friendly toolbox for comprehensive graph analyses of functional brain connectivity, Journal of Neuroscience Methods (2015), http://dx.doi.org/10.1016/j.jneumeth.2015.02.021 \n')
-fprintf('Reference: Brovkin A, Waller L, Dorfschmidt L, Bzdok D, Walter H, Kruschwitz J, GraphVar 2.0: A user-friendly toolbox for machine learning on functional brain connectivity measures, Journal: (n.n.) pre-print (Arxiv) https://arxiv.org/abs/1803.00082 \n')
+fprintf('Reference: Waller L, Brovkin A, Dorfschmidt L, Bzdok D, Walter H, Kruschwitz J, GraphVar 2.0: A user-friendly toolbox for machine learning on functional brain connectivity measures, Journal of Neuroscience Methods (2018)')
 
 
 Welcome();

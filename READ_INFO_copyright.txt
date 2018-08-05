@@ -11,7 +11,8 @@ Affiliations:
 
 GraphVar 2.0: a user-friendly toolbox for machine learning on functional connectivity measures.
 
-Brovkin, A. 1,2, Waller,. L. 1, Dorfschmidt, L. 1,2, Bzdok, D. 3, 4, 5, Walter, H. 1, und Kruschwitz, J.D. 1,2
+Waller,. L. 1*, Brovkin, A. 1,2*, Dorfschmidt, L. 1,2, Bzdok, D. 3, 4, 5, Walter, H. 1, und Kruschwitz, J.D. 1,2
+ *equal contribution
 
 Affiliations:
 1Charité – Universitätsmedizin Berlin, corporate member of Freie Universität Berlin, Humboldt-Universität zu Berlin, and Berlin Institute of Health, Department of Psychiatry and Psychotherapy, Division of Mind and Brain Research, Germany

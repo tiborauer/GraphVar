@@ -58,7 +58,7 @@ NeoData = NeoData(loc + 1, :);
 
 if doML
     actTask = allTasks.getTask('SVM');     actTask.start();
-    actTask.contents;
+    actTask.contents
     
 else
     actTask = allTasks.getTask('GLM');     actTask.start();
@@ -387,7 +387,7 @@ var_case = isempty(loc) ||  (~any(thresholds) && ~isempty(ConnectivityThr));
 
 % multiple outcome cue 
 % multiple outcome cue 
-for iY = 1:length(Outcome)                                                 
+for iY = 1:length(Outcome)                                                 % check transmitted dimensions PP and NP, R
     RES_ = RES (iY);
     
      if any(regexp(modelType, 'classification$'))         
@@ -471,7 +471,7 @@ for iY = 1:length(Outcome)
             W(:, :,  iY), NPW(:, :,  iY), PWF(:, :,  iY) ,  YYLAB_, NXLAB] = ...
                       graphvar_ml(allTasks, NeoData, RES_, ACOV, NCOV, LAB, YY, YYLAB, ...
                     var_case, modelType, nCVFolds, nRandom, ...
-                    doFeatSel, FeatSelThres, doHyperOpt, nHyperOptSteps, doManual, mpar1, mpar2, Outcome);      
+                    doFeatSel, FeatSelThres, doHyperOpt, nHyperOptSteps, doManual, mpar1, mpar2, Outcome)      
        end 
       end
 end 

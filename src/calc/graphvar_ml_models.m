@@ -7,12 +7,13 @@ function [PNAME, HYPO, HYP, TRAIN, TEST, STAT, LAB_CONV] = graphvar_ml_models(mo
 % modelType
 
 HYPlog_ = logspace(-2, 3, nHyperOptSteps);          
-    if doManual 
-        HYP01_ = 1; % set generic, doesnt matter since not called 
-        else
+%     if doManual 
+%         HYP01_ = 1; % set generic, doesnt matter since not called 
+%         ACTUALLY IT DOES!!!!!!!
+%         else
         HYP01_ = linspace(0, 1, nHyperOptSteps + 1); 
         HYP01_ = HYP01_(2:end);
-    end 
+%     end 
 
 LAB_CONV = [];
 
@@ -85,7 +86,7 @@ elseif strcmp(modelType, 'LinSVM regression')
     HYP = [0.5];
     TRAIN = @(X, Y, P) svmtrain(Y, X, ['-s 4 -t 0 -c 1 -n' ' ' num2str(P(1)) ' '  '-b 0 -q']);
     TEST = @LSVC_TEST;
-    STAT = @(Y, YPRED) corr(Y, YPRED, 'tail', 'right'); 
+    STAT = @(Y, YPRED, varargin) corr(Y, YPRED, 'tail', 'right'); 
 %     COEF = @(M) M.SVs' * M.sv_coef;
 
 elseif strcmp(modelType, 'ElasticNet classification')                   
@@ -104,7 +105,7 @@ elseif strcmp(modelType, 'ElasticNet regression')
     HYP = [0.01 0.5];
     TRAIN = @(X, Y, P) struct('fit', glmnet(X, Y, 'gaussian', struct('alpha', P(2), 'nlambda', 1, 'lambda', P(1))), 'lambda', P(1));
     TEST = @(X, Y, M) glmnetPredict(M.fit, X, M.lambda, 'response', 0);
-    STAT = @(Y, YPRED) corr(Y, YPRED, 'tail', 'right'); 
+    STAT = @(Y, YPRED, varargin) corr(Y, YPRED, 'tail', 'right'); 
 % COEF = @ELNET_COEF;
 end
 

@@ -1,3 +1,15 @@
+Release info GraphVar 2.01b:
+
+- fixed an issue with manual hyperparameter entry for elastic net (... wrong GUI handle, did not affect results)
+- fixed an issue when diplaying p-values of negative weights in the machine learning results viewer
+(this was just a visaul issue that did not affect classification/regression results).
+
+Release info GraphVar 2.01:
+
+- added a new compiled MEX file for use on MAC with newer Matlab versions
+- Matlab 2018 colorbar compatibility issue resolved
+- fixed bug "missing brainsheet" in SampleWorkspace 
+
 Release info GraphVar 2.0:
 
 

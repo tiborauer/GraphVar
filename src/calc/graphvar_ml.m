@@ -74,7 +74,7 @@ doHyperOpt, nHyperOptSteps, doManual, mpar1, mpar2, Outcome)
                Y_ = cell(size(NeoData, 1), length(RES)); 
                Y_ = NeoData(:, RES);
                
-          
+           ischar(Y_{1})
                if  ~ischar(Y_{1})
                    Y_ = cell2mat(Y_);              
                    YLAB = num2str(unique(Y_));
@@ -445,7 +445,7 @@ end
     WW = tanh(W);
     WDF = size(Y, 1) - 2;
     WT = WW .* sqrt(WDF) ./ (1 - WW .^ 2);
-    PWF = 1 - tcdf(WT, WDF);  % parametric weights p val
+    PWF = 1 - tcdf(abs(WT), WDF);  % parametric weights p val
      for iThresh = 1: numel(XX)
     [R(:, iThresh), PP(:, iThresh) ] = STAT(Y, YPRED(:, iThresh));              % correlation between Y and Ypredicted, and parametric p-value
      end

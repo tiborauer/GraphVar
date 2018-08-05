@@ -1032,7 +1032,7 @@ if ~strcmp(get(get(handles.tabgroup2, 'SelectedTab'), 'Title'), 'Model Tuning (N
     Idx = get(handles.classifier_type, 'Value'); 
     model = list(Idx);
     doManual = ~strcmp(get(get(handles.tabgroup2, 'SelectedTab'), 'Title'), 'Model Tuning (Nested)');
-    [Name, ~, HYP, ~, ~, ~, ~] = graphvar_ml_models(model, handles.hyperopt_steps, doManual); 
+    [Name, ~, HYP, ~, ~, ~, ~] = graphvar_ml_models(model, get(handles.hyperopt_steps, 'Value'), doManual); 
       if numel(Name) == 2 
         set(handles.ml_PString1, 'String', HYP(1))
         set(handles.ml_PString2, 'String', HYP(2))
