@@ -595,7 +595,7 @@ for threshold = thresholds
                             end
 
                         else % If rand sub
-                            r_idx = idivide(int16(i_sub - 1), nSub);
+                            r_idx = idivide(int32(i_sub - 1), nSub);
                             i_extSub = mod(i_sub - 1, nSub) + 1;
                             ResultRandVar(i_extSub,r_idx,:) = mat2cell(genlouvain_multislice((ResultRand{i_extSub,r_idx,:})),ones(1,n_dyn));
 
@@ -627,7 +627,7 @@ for threshold = thresholds
 
                         else  % If rand sub
 
-                            r_idx = idivide(int16(i_sub - 1), nSub);
+                            r_idx = idivide(int32(i_sub - 1), nSub);
                             i_extSub = mod(i_sub - 1, nSub) + 1;
 
                             if ~isempty(idx_1) && idx_1 ==  i_func
