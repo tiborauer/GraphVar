@@ -3,3 +3,4 @@ workspaces/
 src/gui/GraphVarLastOpend.mat
 
 GraphVarLastOpend.mat
+/matlab_metadata.mat
