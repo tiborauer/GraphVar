@@ -1,29 +1,29 @@
---- general FYI:
-
-In case you encounter the error "Undefined function or variable 'brainSheet'" with the SampleWorkspace please simply run a GLM model 
-before running a ML model (this is to set the correct path in your system - this should do the trick!).
-
-
-
----- Known Bugs on Windows and MAC with Matlab 2017 and ElasticNet machine learning -----------
-
-If you experience problems with ElasticNet on MAC (e.g. Matlab freezes) please try switching to the original MEX file (glmnetMex.mexmaci64_old)
-under 'GraphVar_2.01\src\ext\glmnet_matlab\'. To do so remove the suffix 'old' (glmnetMex.mexmaci64_old) and delete the duplicate file (which is a newly compiled file).
-
---------------------------------------------------
-WHY SHOULD I DO THIS?
---------------------------------------------------
-
-This GraphVar version contains a compiled version of Glmnet for Matlab (glmnetMex.mexmaci64_old)
-
-provided here:
-https://web.stanford.edu/~hastie/glmnet_matlab/download.html
-
-As this mex file was compiled under Matlab 2012a we experienced compatibility issues when
-running ElasticNet models on MAC and Windows with newer Matlab versions (2017). On MAC the file
-appears as invalid and on Windows ElasticNet may crash in some cases and cause Matlab to freeze.
-
-We have compiled a new MEX file for MAC, which should solve this problem. If this new file fails to work try the original one.
-If the original one does not work please downgrade to an older Matlab version or use Ubuntu/Linux systems
-(here we did not experience any issues).
-
+--- general FYI:
+
+In case you encounter the error "Undefined function or variable 'brainSheet'" with the SampleWorkspace please simply run a GLM model 
+before running a ML model (this is to set the correct path in your system - this should do the trick!).
+
+
+
+---- Known Bugs on Windows and MAC with Matlab 2017 and ElasticNet machine learning -----------
+
+If you experience problems with ElasticNet on MAC (e.g. Matlab freezes) please try switching to the original MEX file (glmnetMex.mexmaci64_old)
+under 'GraphVar_2.01\src\ext\glmnet_matlab\'. To do so remove the suffix 'old' (glmnetMex.mexmaci64_old) and delete the duplicate file (which is a newly compiled file).
+
+--------------------------------------------------
+WHY SHOULD I DO THIS?
+--------------------------------------------------
+
+This GraphVar version contains a compiled version of Glmnet for Matlab (glmnetMex.mexmaci64_old)
+
+provided here:
+https://web.stanford.edu/~hastie/glmnet_matlab/download.html
+
+As this mex file was compiled under Matlab 2012a we experienced compatibility issues when
+running ElasticNet models on MAC and Windows with newer Matlab versions (2017). On MAC the file
+appears as invalid and on Windows ElasticNet may crash in some cases and cause Matlab to freeze.
+
+We have compiled a new MEX file for MAC, which should solve this problem. If this new file fails to work try the original one.
+If the original one does not work please downgrade to an older Matlab version or use Ubuntu/Linux systems
+(here we did not experience any issues).
+

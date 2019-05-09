@@ -206,7 +206,9 @@ if ~ischar(FileName) && FileName == 0
     return;
 end
 [pathstr,name,ext] = fileparts(FileName) ;
-brainIdx = find(handles.networkData.or1 == drawArg2(selectedNetworkID));
+
+handles2 = guidata(handles.ResultFig);
+brainIdx = find(handles2.networkData.or1 == drawArg2(selectedNetworkID));
 writetoPAJ(handles.networkData.data(brainIdx,brainIdx),[PathName name],0);
 
 function openBrainNet(~,~,handles)
@@ -247,8 +249,8 @@ end
 [pathstr,name,ext] = fileparts(FileName) ;
 filetype = strcmp(ext,'.csv');
 
-
-brainIdx = find(handles.networkData.or1 == drawArg2(selectedNetworkID));
+handles2 = guidata(handles.ResultFig);
+brainIdx = find(handles2.networkData.or1 == drawArg2(selectedNetworkID));
 
 data = handles.networkData.data(brainIdx,brainIdx);
 data2 = handles.networkData.data2(brainIdx,brainIdx);
@@ -371,6 +373,9 @@ RHO1((isnan(RHO1))) = 0;
 [or1, or2] = get_components(RHO1);
 [b]  = histc(or2, 1:matrix_size);
 
+dat.or1 = or1;
+dat.or2 = or2;
+
 dat.data = RHO1;
 dat.data2 = PVAL1;
 dat.USE_F = USE_F;
@@ -438,8 +443,6 @@ else
 end
 
 dat.alpha=corAlpha;
-dat.or1 = or1;
-dat.or2 = or2;
 
 
 
@@ -645,7 +648,6 @@ handles.networkData = loadAndProcessData(handles.ResultFig, handles ,str2double(
 set(handles.export,'callback',{@exportNetwork_Callback, handles})
 set(handles.exportPAJ,'callback',{@exportPAJ_Callback, handles})
 set(handles.openBrainNet,'callback',{@openBrainNet, handles})
-
 guidata(handles.ResultFig,handles);
 
 function signSelect_Callback(~,~,handles)

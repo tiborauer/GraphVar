@@ -21,8 +21,8 @@ global workspacePath;
 load(fullfile(workspacePath,'Workspace.mat'));
 [brainSheet variableSheet] =  abs_rel_correct(brainSheet,variableSheet);
 [MatrixName, filePos, allTasks, doRandom, nRandom, randomFunction, randomIterations, smallworldness, ...
-    randomForType, pValueField, testAgainstRandom, doShuffelRandom, nShuffelRandom,normalize,random_shuffle_calc,randomRawIter,noCorr,InterimResult, weightAdjust_Thr,DynamicGraphVar,n_multiply] = ...
-    getArgs(varargin,{'MatrixName','P'},'FilePos','TaskPlaner',{'DoRandom',0},'nRandom','RandomFunction','RandomIterations','Smallworldness','randomForType',{'pValueField','PValMatrix'},{'TestAgainstRandom',0},{'DoShuffelRandom',0},{'NShuffelRandom',0},{'Normalize',0},{'RandomRaw',''},{'RandomRawIter',0},{'NoCorr',0},{'InterimResult','default'},{'weightAdjust_Thr',0},{'DynamicGraphVar',''},{'n_multislice','100'});
+    randomForType, pValueField, testAgainstRandom, doShuffelRandom, nShuffelRandom,normalize,random_shuffle_calc,randomRawIter,noCorr,InterimResult, weightAdjust_Thr,DynamicGraphVar,n_multiply,n_alpha] = ...
+    getArgs(varargin,{'MatrixName','P'},'FilePos','TaskPlaner',{'DoRandom',0},'nRandom','RandomFunction','RandomIterations','Smallworldness','randomForType',{'pValueField','PValMatrix'},{'TestAgainstRandom',0},{'DoShuffelRandom',0},{'NShuffelRandom',0},{'Normalize',0},{'RandomRaw',''},{'RandomRawIter',0},{'NoCorr',0},{'InterimResult','default'},{'weightAdjust_Thr',0},{'DynamicGraphVar',''},{'n_multislice','100'},{'n_alpha','1'});
 
 result_path = [workspacePath filesep 'results' filesep InterimResult];
 % is_dyn = 1;
@@ -173,7 +173,7 @@ if(doShuffelRandom)
             
             names = fieldnames(FileCont);
             idx = find(strcmp(names,'is_dyn'), 1);
-            if ~isempty(idx) && FileCont.is_dyn == 1
+            if ~isempty(idx) && FileCont.is_dyn == 1;
                 is_dyn = 1;
             else
                 is_dyn = 0;
@@ -252,6 +252,10 @@ end
 if ~isempty(thresholds)
     threshTask = allTasks.getTask('Thresholds');     threshTask.start();
 end
+
+% if sum(thresholds) == 0
+%     thresholds = 0;
+% end
 
 for threshold = thresholds
     tic
@@ -491,15 +495,15 @@ for threshold = thresholds
                             res = 0;
                             return;
                         end
-                    elseif strcmp(DynamicGraphVar,'Variance over time')
+                    elseif strcmp(DynamicGraphVar,'Summary: Variance over time')
                         Result = var(ResultS, [], 3);
-                    elseif strcmp(DynamicGraphVar,'Standard Deviation')
+                    elseif strcmp(DynamicGraphVar,'Summary: Standard Deviation')
                         Result = std(ResultS, [], 3);
-                    elseif strcmp(DynamicGraphVar,'Periodicity')
+                    elseif strcmp(DynamicGraphVar,'Summary: Periodicity')
                         Result = multidimfunc('periodicity',ResultS, 3);
-                    elseif strcmp(DynamicGraphVar,'PointProcess: rate')
+                    elseif strcmp(DynamicGraphVar,'Summary: PointProcess: rate')
                         Result = multidimfunc('point_process_rate',ResultS, 3);
-                    elseif strcmp(DynamicGraphVar,'PointProcess: interval')
+                    elseif strcmp(DynamicGraphVar,'Summary: PointProcess: interval')
                         Result = multidimfunc('point_process_interval',ResultS, 3);
                     elseif strcmp(DynamicGraphVar,'Dynamic community flexibility: only with MULTISLICE affiliation vector')
                         button = questdlg('It is not possible to use this dynamic measure with small worldness.', 'Dynamic GraphVar','Cancel','Cancel');
@@ -534,7 +538,9 @@ for threshold = thresholds
         %% Still in thresholds AND Type Loop
         clear Result;   % Make sure no old Result is still in memory
         functionList = functions{type}; % Only Functions of the right Type
+        tmpList = functionList;
         graphTask = allTasks.getTask('Graph Function');     graphTask.start();
+        
         for i_func = 1:size(functionList,1)
             graphTask.newCycle([' ' num2str(graphTask.actCycle+1) ' of ' num2str(graphTask.cycles)]);
             
@@ -576,13 +582,70 @@ for threshold = thresholds
                     end
                 end
             else
-                      
+                
                 %ResultMultiSubj = repmat(reshape(VPData, [size(VPData, 1) 1 size(VPData, 2)]), [1 n_multiply 1]);
-
+                
                 for i_sub=1:extNSub % For every Subject including Random
                     %TO BE REVIEWED WAIT WND
-
-
+                    
+                    %% Dynamic Sizemore et al 2017 NeuroImage functions
+                     if n_multiply == -1; %if Sizemore functions are selected
+                         is_dyn = 0; % we will not operate with single windows from this point on
+                         n_dyn = 1;
+                         if (i_sub <= nSub) % If org. Subj
+                            dim_array{:,i_sub} = cat(3, VPData{i_sub,:});
+                            contact_seq{:,i_sub} = arrayToContactSeq(dim_array{:,i_sub},0);
+                            if strcmp(DynamicGraphVar,'Select Dynamic') || strcmp(DynamicGraphVar,'-------------------') || strcmp(DynamicGraphVar,'-------------------Sizemore et al., 2017 NeuroImage') || strcmp(DynamicGraphVar,'-------------------Network Community Toolbox (Bassett Lab)')  || strcmp(DynamicGraphVar,'-------------------Summary Metrics across Sliding-Windows')
+                                button = questdlg('GraphVar detected dynamic input matrices but no dynamic summary measure was selected. Please select a dynamic measure.', 'Dynamic GraphVar','Cancel','Cancel');
+                                if strcmpi(button, 'Cancel')
+                                    res = 0;
+                                    return;
+                                end
+                                
+                            elseif strcmp(DynamicGraphVar,'connection: Number of fastest path - node i to node j')
+                                Result{:,i_sub} = nFastestPaths(contact_seq{:,i_sub},0);
+                            elseif strcmp(DynamicGraphVar,'connection: Duration of shortest path - node i to node j')
+                                Result{:,i_sub} = durationShortestPath(contact_seq{:,i_sub},0);
+                                Result{:,i_sub}(isinf(Result{:,i_sub}))=0;
+                            elseif strcmp(DynamicGraphVar,'global: Temporal efficiency of dynamic network')
+                                Result{:,i_sub} = efficiency_L(contact_seq{:,i_sub},0);
+                            elseif strcmp(DynamicGraphVar,'global: Temporal correlation coefficient of dynamic network')
+                                Result{:,i_sub} = temporal_correlation_C(contact_seq{:,i_sub},0);
+                            elseif strcmp(DynamicGraphVar,'local: Temporal correlation of each node')
+                                Result{:,i_sub} = temporal_correlation_C_vec(contact_seq{:,i_sub},0);
+                            elseif strcmp(DynamicGraphVar,'local: Betweenneess Centrality')
+                                Result{:,i_sub} = betweennessCentrality(contact_seq{:,i_sub},0);
+                            elseif strcmp(DynamicGraphVar,'local: Broadcast Centrality')
+                                Result{:,i_sub} = broadcastCentrality(contact_seq{:,i_sub},n_alpha);
+                            elseif strcmp(DynamicGraphVar,'local: Receive Centrality')
+                                Result{:,i_sub} = receiveCentrality(contact_seq{:,i_sub},n_alpha);
+                            end
+                        else    % every random subjects
+                            r_idx = idivide(int16(i_sub - 1), nSub);
+                            i_extSub = mod(i_sub - 1, nSub) + 1;
+                            dim_array{i_extSub,r_idx,1} = cat(3, VPData{i_extSub,r_idx,1});
+                            contact_seq{i_extSub,r_idx,1} = arrayToContactSeq(dim_array{i_extSub,r_idx,1},0);
+                            if strcmp(DynamicGraphVar,'connection: Number of fastest path - node i to node j')
+                                ResultRandVar{i_extSub,r_idx,1} = nFastestPaths(contact_seq{i_extSub,r_idx,1},0);
+                            elseif strcmp(DynamicGraphVar,'connection: Duration of shortest path - node i to node j')
+                                ResultRandVar{i_extSub,r_idx,1} = durationShortestPath(contact_seq{i_extSub,r_idx,1},0);
+                                ResultRandVar{i_extSub,r_idx,1}(isinf(ResultRandVar{i_extSub,r_idx,1}))=0;
+                            elseif strcmp(DynamicGraphVar,'global: Temporal efficiency of dynamic network')
+                                ResultRandVar{i_extSub,r_idx,1} = efficiency_L(contact_seq{i_extSub,r_idx,1},0);    
+                            elseif strcmp(DynamicGraphVar,'global: Temporal correlation coefficient of dynamic network')
+                                ResultRandVar{i_extSub,r_idx,1} = temporal_correlation_C(contact_seq{i_extSub,r_idx,1},0);
+                            elseif strcmp(DynamicGraphVar,'local: Temporal correlation of each node')
+                                ResultRandVar{i_extSub,r_idx,1} = temporal_correlation_C_vec(contact_seq{i_extSub,r_idx,1},0);
+                            elseif strcmp(DynamicGraphVar,'local: Betweenneess Centrality')
+                                ResultRandVar{i_extSub,r_idx,1} = betweennessCentrality(contact_seq{i_extSub,r_idx,1},0);
+                            elseif strcmp(DynamicGraphVar,'local: Broadcast Centrality')
+                                ResultRandVar{i_extSub,r_idx,1} = broadcastCentrality(contact_seq{i_extSub,r_idx,1},1);
+                            elseif strcmp(DynamicGraphVar,'local: Receive Centrality')
+                                ResultRandVar{i_extSub,r_idx,1} = receiveCentrality(contact_seq{i_extSub,r_idx,1},1);
+                            end
+                        end
+                    end
+                    
                     %% compute multislice community assignment functions one iteration
                     if ~isempty(idx_ms) && idx_ms ==  i_func   % If org. Subj
                         if (i_sub <= nSub) && n_multiply < 2
@@ -593,70 +656,72 @@ for threshold = thresholds
                                 multislice_community_assignment{i_sub,i_multiply,:} = genlouvain_multislice((VPData{i_sub,:}));
                                 ResultMultiVar(i_sub,i_multiply,:) = mat2cell(multislice_community_assignment{i_sub,i_multiply,:},ones(1,n_dyn));
                             end
-
+                            
                         else % If rand sub
                             r_idx = idivide(int32(i_sub - 1), nSub);
                             i_extSub = mod(i_sub - 1, nSub) + 1;
                             ResultRandVar(i_extSub,r_idx,:) = mat2cell(genlouvain_multislice((ResultRand{i_extSub,r_idx,:})),ones(1,n_dyn));
-
+                            
                             multislice_community_assignment_random{i_extSub,r_idx,:} = genlouvain_multislice((ResultRand{i_extSub,r_idx,:}));
                             ResultRandVar(i_extSub,r_idx,:) = mat2cell(multislice_community_assignment_random{i_extSub,r_idx,:},ones(1,n_dyn));
                         end
                     end
-
+                    
                     %% compute regular functions
-                    for i_dyn = 1:n_dyn
-                        if(i_sub <= nSub)   % If org. Subj
-                            if ~isempty(idx_1) && idx_1 ==  i_func
-                                Result{i_dyn,i_sub} = cost_efficiency_relative_bin((VPData{i_sub,i_dyn}),threshold);
-                            elseif ~isempty(idx_2) && idx_2 ==  i_func
-                                Result{i_dyn,i_sub} = cost_efficiency_relative_wei((VPData{i_sub,i_dyn}),threshold);
-                            elseif ~isempty(idx_ms) && idx_ms ==  i_func
-                                multislice = 1;
-                            else
-                                try
-                                    Result{i_dyn,i_sub} = eval([functionList{i_func} '(VPData{i_sub,i_dyn})']);
-                                catch err
-                                    if(GraphVarError(err))
-                                        continue;
-                                    else
-                                        rethrow(err);
+                    if n_multiply ~= -1 %if the Sizemore functions are not selected
+                        for i_dyn = 1:n_dyn
+                            if(i_sub <= nSub)   % If org. Subj
+                                if ~isempty(idx_1) && idx_1 ==  i_func
+                                    Result{i_dyn,i_sub} = cost_efficiency_relative_bin((VPData{i_sub,i_dyn}),threshold);
+                                elseif ~isempty(idx_2) && idx_2 ==  i_func
+                                    Result{i_dyn,i_sub} = cost_efficiency_relative_wei((VPData{i_sub,i_dyn}),threshold);
+                                elseif ~isempty(idx_ms) && idx_ms ==  i_func
+                                    multislice = 1;
+                                else
+                                    try
+                                        Result{i_dyn,i_sub} = eval([functionList{i_func} '(VPData{i_sub,i_dyn})']);
+                                    catch err
+                                        if(GraphVarError(err))
+                                            continue;
+                                        else
+                                            rethrow(err);
+                                        end
+                                    end
+                                end
+                                
+                            else  % If rand sub
+                                
+                                r_idx = idivide(int32(i_sub - 1), nSub);
+                                i_extSub = mod(i_sub - 1, nSub) + 1;
+                                
+                                if ~isempty(idx_1) && idx_1 ==  i_func
+                                    ResultRandVar{i_extSub,r_idx,i_dyn} = cost_efficiency_relative_bin((ResultRand{i_extSub,r_idx,i_dyn}),threshold);
+                                elseif ~isempty(idx_2) && idx_2 ==  i_func
+                                    ResultRandVar{i_extSub,r_idx,i_dyn} = cost_efficiency_relative_wei((ResultRand{i_extSub,r_idx,i_dyn}),threshold);
+                                elseif ~isempty(idx_ms) && idx_ms ==  i_func
+                                    multislice = 1;
+                                else
+                                    try
+                                        ResultRandVar{i_extSub,r_idx,i_dyn} = eval([functionList{i_func} '(ResultRand{i_extSub,r_idx,i_dyn})']);
+                                    catch err
+                                        if(GraphVarError(err))
+                                            continue;
+                                        else
+                                            rethrow(err);
+                                        end
                                     end
                                 end
                             end
-
-                        else  % If rand sub
-
-                            r_idx = idivide(int32(i_sub - 1), nSub);
-                            i_extSub = mod(i_sub - 1, nSub) + 1;
-
-                            if ~isempty(idx_1) && idx_1 ==  i_func
-                                ResultRandVar{i_extSub,r_idx,i_dyn} = cost_efficiency_relative_bin((ResultRand{i_extSub,r_idx,i_dyn}),threshold);
-                            elseif ~isempty(idx_2) && idx_2 ==  i_func
-                                ResultRandVar{i_extSub,r_idx,i_dyn} = cost_efficiency_relative_wei((ResultRand{i_extSub,r_idx,i_dyn}),threshold);
-                            elseif ~isempty(idx_ms) && idx_ms ==  i_func
-                                multislice = 1;
-                            else
-                                try
-                                    ResultRandVar{i_extSub,r_idx,i_dyn} = eval([functionList{i_func} '(ResultRand{i_extSub,r_idx,i_dyn})']);
-                                catch err
-                                    if(GraphVarError(err))
-                                        continue;
-                                    else
-                                        rethrow(err);
-                                    end
-                                end
+                            
+                            %TO BE REVIEWED WAIT WND
+                            if(~running)
+                                res = 0;
+                                return;
                             end
-                        end
-
-                        %TO BE REVIEWED WAIT WND
-                        if(~running)
-                            res = 0;
-                            return;
-                        end
-                        subjectTask.newCycle([' ' num2str(i_sub) ' of ' num2str(extNSub)]);
-
-                    end %dyn
+                            subjectTask.newCycle([' ' num2str(i_sub) ' of ' num2str(extNSub)]);
+                            
+                        end %dyn
+                    end % n_multiply and not sizemore function
                 end % End Every Subject including Random
             end
             
@@ -666,7 +731,7 @@ for threshold = thresholds
                 for i_dyn = 1:n_dyn
                     for i = 1:size(Result,2)
                         M = cat(dim+1,ResultRandVar{i,:,i_dyn});
-                        if any(mean(M,dim+1) == 0)
+                        if any(mean(M,dim+1) == 0);
                             button = questdlg('Normalization error: some metrics derived from random networks result in zero which cannot be used for normalization.', 'Normalization Error','Cancel','Cancel');
                             if strcmpi(button, 'Cancel')
                                 res = 0;
@@ -725,26 +790,26 @@ for threshold = thresholds
             
             if(is_dyn)
                 %% Compute VARIANCE or OTHER dynamic summary measure to concatinate info of sliding windows
-                if n_multiply < 2
+                if n_multiply < 2 && n_multiply ~= -1 % and not the Sizemore functions
                     Result = Result_tmp; % Result_tmp is the graph measure derived and saved above from the original data per sliding window
                     Result = cell2mat(reshape(Result, [1 1 size(Result)]));
                     
                     
-                    if strcmp(DynamicGraphVar,'Select Dynamic')
+                    if strcmp(DynamicGraphVar,'Select Dynamic') || strcmp(DynamicGraphVar,'-----------')
                         button = questdlg('GraphVar detected dynamic input matrices but no dynamic summary measure was selected. Please select a dynamic measure.', 'Dynamic GraphVar','Cancel','Cancel');
                         if strcmpi(button, 'Cancel')
                             res = 0;
                             return;
                         end
-                    elseif strcmp(DynamicGraphVar,'Variance over time')
+                    elseif strcmp(DynamicGraphVar,'Summary: Variance over time')
                         Result = var(Result, [], 3);
-                    elseif strcmp(DynamicGraphVar,'Standard Deviation')
+                    elseif strcmp(DynamicGraphVar,'Summary: Standard Deviation')
                         Result = std(Result, [], 3);
-                    elseif strcmp(DynamicGraphVar,'Periodicity')
+                    elseif strcmp(DynamicGraphVar,'Summary: Periodicity')
                         Result = multidimfunc('periodicity',Result, 3);
-                    elseif strcmp(DynamicGraphVar,'PointProcess: rate')
+                    elseif strcmp(DynamicGraphVar,'Summary: PointProcess: rate')
                         Result = multidimfunc('point_process_rate',Result, 3);
-                    elseif strcmp(DynamicGraphVar,'PointProcess: interval')
+                    elseif strcmp(DynamicGraphVar,'Summary: PointProcess: interval')
                         Result = multidimfunc('point_process_interval',Result, 3);
                     elseif strcmp(DynamicGraphVar,'Dynamic community flexibility: only with MULTISLICE affiliation vector')
                         if isempty(idx_ms) || idx_ms > 1
@@ -792,15 +857,15 @@ for threshold = thresholds
                     tmpSize = size(ResultRandVar, 2);
                     ResultRandVar = cell2mat(reshape(ResultRandVar, [1 1 size(ResultRandVar)]));
                     
-                    if  strcmp(DynamicGraphVar,'Variance over time')
+                    if  strcmp(DynamicGraphVar,'Summary: Variance over time')
                         ResultRandVar = var(ResultRandVar, [], 5);
-                    elseif strcmp(DynamicGraphVar,'Standard Deviation')
+                    elseif strcmp(DynamicGraphVar,'Summary: Standard Deviation')
                         ResultRandVar = std(ResultRandVar, [], 5);
-                    elseif strcmp(DynamicGraphVar,'Periodicity')
+                    elseif strcmp(DynamicGraphVar,'Summary: Periodicity')
                         ResultRandVar = multidimfunc('periodicity',ResultRandVar, 5);
-                    elseif strcmp(DynamicGraphVar,'PointProcess: rate')
+                    elseif strcmp(DynamicGraphVar,'Summary: PointProcess: rate')
                         ResultRandVar = multidimfunc('point_process_rate',ResultRandVar, 5);
-                    elseif strcmp(DynamicGraphVar,'PointProcess: interval')
+                    elseif strcmp(DynamicGraphVar,'Summary: PointProcess: interval')
                         ResultRandVar = multidimfunc('point_process_interval',ResultRandVar, 5);
                     elseif strcmp(DynamicGraphVar,'Dynamic community flexibility: only with MULTISLICE affiliation vector')
                         ResultRandVar = multidimfunc('flexibility_help',ResultRandVar, 5);
@@ -843,6 +908,7 @@ for threshold = thresholds
                 
             end % End Dynamic Summary Measure
         end % End Functions
+
         
         clear Result ResultRandVar ResultS ResultMultiVar;
         typeTask.newCycle([' ' num2str(type) ' of ' num2str(2)]);

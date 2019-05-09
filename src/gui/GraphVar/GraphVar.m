@@ -20,7 +20,7 @@ function varargout = GraphVar(varargin)
 %      GRAPHVAR, by itself, creates a new GRAPHVAR or raises the existing
 %      singleton*.
 
-% Last Modified by GUIDE v2.5 22-Sep-2017 04:37:28
+% Last Modified by GUIDE v2.5 28-Feb-2019 10:58:37
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -676,12 +676,47 @@ if strcmp(item_selected,'Dynamic community flexibility: only with MULTISLICE aff
 
     ind = find(ismember(list,'Weighted: MULTISLICE affiliation Vector GENERALIZED Louvain - MULTISLICE affiliation Vector'));
     set(handles.list_brainvars_var,'Value',ind);
-else
-    if strcmp(item_selected,'Variance over time') || strcmp(item_selected,'Standard Deviation') || strcmp(item_selected,'Periodicity') || strcmp(item_selected,'PointProcess: rate') || strcmp(item_selected,'PointProcess: interval')
+elseif strcmp(item_selected,'Summary: Variance over time') || strcmp(item_selected,'Summary: Standard Deviation') || strcmp(item_selected,'Summary: Periodicity') || strcmp(item_selected,'Summary: PointProcess: rate') || strcmp(item_selected,'Summary: PointProcess: interval')
         input = 1;
         set(handles.n_multislice,'String', input);
-    set(handles.list_brainvars_var,'Enable','on');
-    end
+        set(handles.list_brainvars_var,'Enable','on');
+elseif strcmp(item_selected,'connection: Number of fastest path - node i to node j') || strcmp(item_selected,'connection: Duration of shortest path - node i to node j');
+        input = -1;
+        set(handles.n_multislice,'String', input);
+        set(handles.list_brainvars_var,'Enable','off');
+        list = get(handles.list_brainvars_var,'String');
+        ind = find(ismember(list,'Binary: ---------------------------------------------------------------'));
+        set(handles.list_brainvars_var,'Value',ind);
+elseif strcmp(item_selected,'global: Temporal efficiency of dynamic network') || strcmp(item_selected,'global: Temporal correlation coefficient of dynamic network');
+        input = -1;
+        set(handles.n_multislice,'String', input);
+        set(handles.list_brainvars_var,'Enable','off');
+        list = get(handles.list_brainvars_var,'String');
+        ind = find(ismember(list,'Binary: -------------------------------------------------------------'));
+        set(handles.list_brainvars_var,'Value',ind);
+elseif strcmp(item_selected,'local: Temporal correlation of each node') || strcmp(item_selected,'local: Betweenneess Centrality');
+        input = -1;
+        set(handles.n_multislice,'String', input);
+        set(handles.list_brainvars_var,'Enable','off');
+        list = get(handles.list_brainvars_var,'String');
+        ind = find(ismember(list,'Binary: --------------------------------------------------------------'));
+        set(handles.list_brainvars_var,'Value',ind);
+elseif  strcmp(item_selected,'local: Broadcast Centrality') || strcmp(item_selected,'local: Receive Centrality');
+        input2 = inputdlg({'scalar in (0,1) governing weight given to paths based on the number of edges?'},'Dynamic Community',1,{'1'});
+        input2 = str2double(input2);
+        if isnan(input2)
+           DynamicGraphVar_Callback(hObject, eventdata, handles);
+        end
+        if isempty(input2)
+            input2 = 1; 
+        end
+        input = -1;
+        set(handles.n_multislice,'String', input);
+        set(handles.n_alpha,'String', input2);
+        set(handles.list_brainvars_var,'Enable','off');
+        list = get(handles.list_brainvars_var,'String');
+        ind = find(ismember(list,'Binary: --------------------------------------------------------------'));
+        set(handles.list_brainvars_var,'Value',ind);
 end
 % --- Executes during object creation, after setting all properties.
 function DynamicGraphVar_CreateFcn(hObject, eventdata, handles)
@@ -1215,3 +1250,84 @@ end
 % --- Executes during object creation, after setting all properties.
 function manual_tuning_CreateFcn(hObject, eventdata, handles)
 guidata(hObject, handles) % overwritten 
+
+
+
+
+
+function n_alpha_Callback(hObject, eventdata, handles)
+% hObject    handle to n_alpha (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of n_alpha as text
+%        str2double(get(hObject,'String')) returns contents of n_alpha as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function n_alpha_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to n_alpha (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+% --- Executes on button press in pushbutton91.
+function GroupCommunity_compare_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton91 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+
+% --- Executes on button press in BrainNet_vis.
+function BrainNet_vis_Callback(hObject, eventdata, handles)
+if(get(handles.BrainNet_vis,'Value') == 1)
+end
+GraphVar_settingsChanged(handles)
+
+% --- Executes on button press in doMInVIn.
+function doMInVIn_Callback(hObject, eventdata, handles)
+if(get(handles.doMInVIn,'Value') == 1)
+end
+GraphVar_settingsChanged(handles)
+
+
+% --- Executes on button press in doZh.
+function doZh_Callback(hObject, eventdata, handles)
+if(get(handles.doZh,'Value') == 1)
+end
+GraphVar_settingsChanged(handles)
+
+
+
+function gamma_Callback(hObject, eventdata, handles)
+% hObject    handle to gamma (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of gamma as text
+%        str2double(get(hObject,'String')) returns contents of gamma as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function gamma_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to gamma (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+

@@ -92,6 +92,8 @@ set(handles.tab_nested,'Tag', 'nested_tuning');
 set(handles.tab_manual,'Tag', 'manual_tuning');
 
 set(hObject,'Units','Pixels');
+set(findall(hObject, '-property', 'FontSize'), 'FontUnits', 'pixels', 'FontSize', 11);
+
 handles.startSize = get(hObject,'Position');
 set(handles.DynamicGraphVar,'Visible','Off');
 

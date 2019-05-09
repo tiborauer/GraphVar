@@ -41,9 +41,28 @@ function [pID, p_masked] = fdr(pvals, q, fdrType);
 
 if nargin < 3, fdrType = 'parametric'; end;
 if isempty(pvals), pID = []; return; end;
+
+if ismatrix(pvals) && issymmetric(pvals)
+dummy = ones(size(pvals,2)); 
+dummy(logical(eye(size(dummy)))) = 0;
+V = nnz(triu(dummy));
+p_ = sort(pvals(:)); 
+p = p_(1:V); 
+I = (1:V)';
+end
+
+if ismatrix(pvals) ~= issymmetric(pvals)
+p = sort(pvals(:));
+V = length(p);
+I = (1:V)'; 
+end
+
+if ~ismatrix(pvals)
 p = sort(pvals(:));
 V = length(p);
 I = (1:V)';
+end
+
 
 cVID = 1;
 cVN = sum(1./(1:V));

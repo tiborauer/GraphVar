@@ -1,55 +1,71 @@
-Release info GraphVar 2.01b:
-
-- fixed an issue with manual hyperparameter entry for elastic net (... wrong GUI handle, did not affect results)
-- fixed an issue when diplaying p-values of negative weights in the machine learning results viewer
-(this was just a visaul issue that did not affect classification/regression results).
-
-Release info GraphVar 2.01:
-
-- added a new compiled MEX file for use on MAC with newer Matlab versions
-- Matlab 2018 colorbar compatibility issue resolved
-- fixed bug "missing brainsheet" in SampleWorkspace 
-
-Release info GraphVar 2.0:
-
-
-Background: We previously presented GraphVar as a user-friendly
-MATLAB toolbox for comprehensive graph analyses of functional
-brain connectivity. Here we introduce a comprehensive extension of
-the toolbox allowing users to seamlessly explore easily customizable
-decoding models across functional connectivity measures as
-well as additional features.
-
-New Method: GraphVar 2.0 provides machine learning (ML)
-model construction, validation and exploration. Machine learning
-can be performed across any combination of network measures
-and additional variables, allowing for a flexibility in neuroimaging
-applications.
-
-Results: In addition to previously integrated functionalities, such
-as network construction and graph-theoretical analyses of brain
-connectivity with a high-speed general linear model (GLM), users
-can now perform customizable ML across connectivity matrices,
-network metrics and additionally imported variables. The new
-extension also provides parametric and nonparametric testing of
-classifier and regressor performance, data export, figure generation
-and high quality export.
-
-Comparison with existing methods: Compared to other existing
-toolboxes, GraphVar 2.0 offers (1) comprehensive customization,
-(2) an all-in-one user friendly interface, (3) customizable model
-design and manual hyperparameter entry, (4) interactive results
-exploration and data export, (5) automated cueing for modelling
-multiple outcome variables within the same session, (6) an easy to
-follow introductory review.
-
-Conclusions: GraphVar 2.0 allows comprehensive, user-friendly
-exploration of encoding (GLM) and decoding (ML) modelling
-approaches on functional connectivity measures making big data
-neuroscience readily accessible to a broader audience of neuroimaging
-investigators.
-
-
-
-
+Release info GraphVar 2.02:
+ 
+- added community functionalities as in Fornito et al., 2012: https://www.pnas.org/content/109/31/12788
+- added dynamic network measures as in Seizemore et al., 2017: https://www.sciencedirect.com/science/article/pii/S1053811917305645
+- fixed a bug when displaying R2 values (issues with the X axis)
+- added 'Result', '-v7.3' to execute stats (i.e., now any size of result can be saved)
+- fixed bug when running permutation analyses with 3 between factors (worked previously and got lost in some updates)
+- fixed bug when running GraphVar on Retina displays
+
+
+
+Release info GraphVar 2.01c:
+
+- fixed an issue for LinSVM (classification, regression, probabilisitc): tuned hyperparameters derived from nested-cross validation
+were not applied to the models (i.e., prediction was similar to no hyperparameter optimization). ElasticNet was unaffected.
+
+Release info GraphVar 2.01b:
+
+- fixed an issue with manual hyperparameter entry for elastic net (... wrong GUI handle, did not affect results)
+- fixed an issue when diplaying p-values of negative weights in the machine learning results viewer
+(this was just a visaul issue that did not affect classification/regression results).
+
+Release info GraphVar 2.01:
+
+- added a new compiled MEX file for use on MAC with newer Matlab versions
+- Matlab 2018 colorbar compatibility issue resolved
+- fixed bug "missing brainsheet" in SampleWorkspace 
+
+Release info GraphVar 2.0:
+
+
+Background: We previously presented GraphVar as a user-friendly
+MATLAB toolbox for comprehensive graph analyses of functional
+brain connectivity. Here we introduce a comprehensive extension of
+the toolbox allowing users to seamlessly explore easily customizable
+decoding models across functional connectivity measures as
+well as additional features.
+
+New Method: GraphVar 2.0 provides machine learning (ML)
+model construction, validation and exploration. Machine learning
+can be performed across any combination of network measures
+and additional variables, allowing for a flexibility in neuroimaging
+applications.
+
+Results: In addition to previously integrated functionalities, such
+as network construction and graph-theoretical analyses of brain
+connectivity with a high-speed general linear model (GLM), users
+can now perform customizable ML across connectivity matrices,
+network metrics and additionally imported variables. The new
+extension also provides parametric and nonparametric testing of
+classifier and regressor performance, data export, figure generation
+and high quality export.
+
+Comparison with existing methods: Compared to other existing
+toolboxes, GraphVar 2.0 offers (1) comprehensive customization,
+(2) an all-in-one user friendly interface, (3) customizable model
+design and manual hyperparameter entry, (4) interactive results
+exploration and data export, (5) automated cueing for modelling
+multiple outcome variables within the same session, (6) an easy to
+follow introductory review.
+
+Conclusions: GraphVar 2.0 allows comprehensive, user-friendly
+exploration of encoding (GLM) and decoding (ML) modelling
+approaches on functional connectivity measures making big data
+neuroscience readily accessible to a broader audience of neuroimaging
+investigators.
+
+
+
+
 ---> there is a preprint version of a corresponding new GraphVar ML articel on arxiv.org  <---

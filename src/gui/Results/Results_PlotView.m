@@ -652,7 +652,7 @@ if(PlotType == 2) || (PlotType == 3)
         elseif strcmp('reorder_mod',visFuncs(visFuncIdx))
             STAT(isnan(STAT)) = 0;
             PVAL(isnan(PVAL)) = 1;
-            mod = modularity_und(STAT);
+            mod = modularity_cOut_und(STAT);
             [newOrder,STAT] = reorder_mod(abs(STAT),mod);
             [~,PVAL] = reorder_mod(PVAL,mod);
             filterFieldStrings{4} = filterFieldStrings{4}(newOrder);
@@ -799,9 +799,11 @@ else
     
     BrainStr = handles.BrainStrings(handles.brainSelect);
     BrainStr = BrainStr(Indices(1));
+
 end
 
 if ~any(isnan(Indices))
+
     set(handles.htext, 'Visible', 'on');
     set(handles.box, 'Visible', 'on');
 
@@ -833,6 +835,7 @@ if ~any(isnan(Indices))
 
     set(handles.box, 'Position', ...
         [BoxPoint BoxSize]);
+
 else
     set(handles.htext, 'Visible', 'off');
     set(handles.box, 'Visible', 'off');

@@ -182,6 +182,14 @@ Binary = {
 'Get Components - UND','get_components',1,...
 'Get Components: <br> Returns the components of an undirected graph specified by the binary and <br>  undirected adjacency matrix adj. Components and their constitutent nodes are <br> assigned the same index and stored in the vector, comps. The vector, comp_sizes,<br> contains the number of nodes beloning to each component.';
 
+
+'-------------------------------------------------------------','dynamic_global',1, ...
+'dynamic_global metrics Seizemore et al. 2017 Neuroimage';
+'--------------------------------------------------------------','dynamic_local',2, ...
+'dynamic_local metrics Seizemore et al. 2017 Neuroimage';
+'---------------------------------------------------------------','dynamic_connection',3, ...
+'dynamic_connection metrics Seizemore et al. 2017 Neuroimage';
+
 };
 
 
@@ -322,8 +330,17 @@ Weighted = {
 'Small World Propensity - UND','small_world_propensity',2, ...
 'Small World Propensity'
 
-'Strength - UND','strengths_und',2, ...
-'Strength: <br>Node strength is the sum of weights of links connected to the node.';
+'Strength positive global - UND','strengths_und_sign_vpos',2, ...
+'Strength: <br>Total strength is the sum of positive weights of links connected to nodes in the network.';
+
+'Strength positive local - UND','strengths_und_sign_Spos',2, ...
+'Strength: <br>Total strength is the sum of positive weights of links connected to a node.';
+
+'Strength negative global - UND','strengths_und_sign_vneg',2, ...
+'Strength: <br>Total strength is the sum of positive weights of links connected to nodes in the network.';
+
+'Strength negative local - UND','strengths_und_sign_Sneg',2, ...
+'Strength: <br>Total strength is the sum of negative weights of links connected to a node.';
 
 'Strength - DIR','strengths_dir',2, ...
 'Strength: <br>Node strength is the sum of weights of links connected to the node.';
@@ -363,6 +380,19 @@ Weighted = {
 
 'Fine-tuning modularity algorithm (neg weights)- modularity Output - UND', 'modularity_finetune_QOut_und_sign',1, ...
 'Maximized modularity Q:<br>The functions are supplementary information to the paper <br>Weight-conserving characterization of complex functional brain networks <br>Rubinov M, Sporns O (2011) NeuroImage, 56:2068-2079.';
+
+'Diversity Coefficient Louvain - Negative Output - UND','hneg_Louvain',1, ...
+'Something Meaningful';
+
+'Diversity Coefficient Louvain - Positive Output - UND','hpos_Louvain',1, ...
+'Something Meaningful';
+
+'Diversity Coefficient Newman - Negative Output - UND','hneg_Newman',1, ...
+'Something Meaningful';
+
+'Diversity Coefficient Newman - Positive Output - UND','hpos_Newman',1, ...
+'Something Meaningful';
+
 
 };
 

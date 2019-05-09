@@ -24,6 +24,7 @@ else
     noCorr = 0;
 end
 dialogData.n_multislice = 100;
+dialogData.n_alpha = 1;
 
 dialogData.RandomNetwork_smallWorld = 0;
 dialogData.randBinary = 0; dialogData.randWeighted=0;
@@ -57,6 +58,9 @@ dialogData.RandomDataRepitions = 0;
 dialogData.weightAdjust_Thr = 0;
 dialogData.weightAdjust_Raw = 0;
 dialogData.R2Z = get(handles.r2z_check,'Value');
+dialogData.BrainNet_vis = get(handles.BrainNet_vis,'Value');
+dialogData.doZh = get(handles.doZh,'Value');
+dialogData.doMInVIn = get(handles.doMInVIn,'Value');
 %%%%%%%%%%%
 
 dialogData.DoML=[];
@@ -127,6 +131,8 @@ dialogData.weightAdjust_Thr = get(handles.weights_absolute,'Value')  + 2 * get(h
 dialogData.weightAdjust_Raw = get(handles.weights_absolute_raw,'Value')  + 2 * get(handles.weights_negToZero_raw,'Value');
 
 dialogData.n_multislice = str2double(get(handles.n_multislice,'String'));
+dialogData.n_alpha = str2double(get(handles.n_alpha,'String'));
+dialogData.gamma = str2double(get(handles.gamma,'String'));
 
 dialogData.TestAgainstRandom = 0;
 dialogData.testAgainstRandGroup = 0;
@@ -398,7 +404,7 @@ end
 
 
 
-if ~strcmp(get(get(handles.tabgroup, 'SelectedTab'), 'Title'), 'GLM')
+if ~strcmp(get(get(handles.tabgroup, 'SelectedTab'), 'Title'), 'GLM') && ~get(handles.GraphVar_GroupCommunity_panel_btn,'Value') 
         beep on % turn on beep warning sound 
         %determine type input (response) appropriate for test selected
         global workspacePath
@@ -413,7 +419,6 @@ if ~strcmp(get(get(handles.tabgroup, 'SelectedTab'), 'Title'), 'GLM')
         response = get(handles.list_response,'String');
         handles.varnames = NeoData(1,:);
         n = handles.varnames;
-        
         for i = 1:numel(response) 
            tf = find(strcmp(response(i),n));
            A = NeoData(:, tf);

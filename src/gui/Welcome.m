@@ -65,7 +65,7 @@ jIcon=javax.swing.ImageIcon([ root_path 'src\gui\GraphVar\Icon.png']);
 jframe.setFigureIcon(jIcon);  
 warning('on','MATLAB:HandleGraphics:ObsoletedProperty:JavaFrame');
 
-
+set(findall(hObject, '-property', 'FontSize'), 'FontUnits', 'pixels', 'FontSize', 11);
 
 % UIWAIT makes Welcome wait for user response (see UIRESUME)
 % uiwait(handles.WorkspaceChooser);
@@ -159,6 +159,7 @@ mkdir(fullfile(result_path,'SICEMatrix'));
 mkdir(fullfile(result_path,'CorrectedAlpha'));
 mkdir(fullfile(result_path,'RandomizedTimeSeries'));
 mkdir(fullfile(result_path,'FragCheck'));
+mkdir(fullfile(result_path,'GroupCommunity'));
 
 copyfile(fullfile(root_path,'SampleData','BrainRegions.csv'),fullfile('workspaces', workspacename,brainSheet));
 copyfile(fullfile(root_path,'SampleData','Variables.csv'),fullfile('workspaces', workspacename,variableSheet));
@@ -170,7 +171,7 @@ save([workspace_path filesep workspacename filesep 'results' filesep 'InterimRes
 
 mkdir(fullfile(result_path,'default','RandomizedShuffel'));
 mkdir(fullfile(result_path,'default','GraphVars'));
-
+mkdir(fullfile(result_path,'default','GroupCommunity'));
 
 delete(handles.WorkspaceChooser); 
 GraphVar('Workspace',fullfile(workspace_path,workspacename));

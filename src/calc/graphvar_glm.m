@@ -543,7 +543,7 @@ function [PFUN, RFUN, NFUN, ...
         SE = permute(SE, [3 4 1 2]);
     end
 
-    function [PP, NP, F, RF, LB, LRB, SE] = RFIT(Y, NR) % Randomization test
+    function [PP, NP, F, RF, LB, LRB] = RFIT(Y, NR) % Randomization test originally: [PP, NP, F, RF, LB, LRB, SE] = RFIT(Y, NR)
         Y = PRE(Y);
         
         [B, R] = tlstsq(X, Y);
@@ -555,8 +555,8 @@ function [PFUN, RFUN, NFUN, ...
             (bsxfun(@times, R, permute(J, [1 3 2])) / DDF);
         F = permute(F, [3 4 1 2]);
         
-        SE = sqrt(...
-            bsxfun(@times, tdot(tdot(L, XTX), tt(L)), R ./ DDF));
+%         SE = sqrt(...
+%             bsxfun(@times, tdot(tdot(L, XTX), tt(L)), R ./ DDF));
         
         PP = 1 - fcdf(F, ...
             repmat(J', 1, size(F, 2)), ...
@@ -601,8 +601,8 @@ function [PFUN, RFUN, NFUN, ...
                 tt(STD));
         end
         
-        SE = SE(1, :, :, :);
-        SE = permute(SE, [3 4 1 2]);
+%         SE = SE(1, :, :, :);
+%         SE = permute(SE, [3 4 1 2]);
     end
 
     function [PP, NP, F, NF, LB, LNB, SE] = NFIT(Y) % Null model networks
@@ -621,7 +621,7 @@ function [PFUN, RFUN, NFUN, ...
             (bsxfun(@times, NR, permute(J, [1 3 2])) / DDF);
         
         SE = sqrt(...
-            bsxfun(@times, tdot(tdot(L, XTX), tt(L)), NR(:, :, 1) ./ DDF));
+            bsxfun(@times, tdot(tdot(L, XTX), tt(L)), NR(:, :, :, :, 1) ./ DDF));
         
         LNB = permute(LNB, [3:5 1 2]);
         NF = permute(NF, [3:5 1 2]);

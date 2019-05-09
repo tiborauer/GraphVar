@@ -7,13 +7,12 @@ function [PNAME, HYPO, HYP, TRAIN, TEST, STAT, LAB_CONV] = graphvar_ml_models(mo
 % modelType
 
 HYPlog_ = logspace(-2, 3, nHyperOptSteps);          
-%     if doManual 
-%         HYP01_ = 1; % set generic, doesnt matter since not called 
-%         ACTUALLY IT DOES!!!!!!!
-%         else
+    if doManual 
+        HYP01_ = 1; % set generic, doesnt matter since not called 
+        else
         HYP01_ = linspace(0, 1, nHyperOptSteps + 1); 
         HYP01_ = HYP01_(2:end);
-%     end 
+    end 
 
 LAB_CONV = [];
 
@@ -64,7 +63,7 @@ if strcmp(modelType, 'LinSVM classification')
     PNAME = {'C'};
     HYPO = [HYPlog_(:)];
     HYP = [10];
-    TRAIN = @(X, Y, P) svmtrain(Y, X, ['-s 0 -t 0 -c 1 -n' ' ' num2str(P(1)) ' '  '-b 0 -q']);
+    TRAIN = @(X, Y, P) svmtrain(Y, X, ['-s 0 -t 0 -c' ' ' num2str(P(1)) ' '  '-b 0 -q']);
     TEST = @LSVC_TEST;
     LAB_CONV = @LAB_CONV1;
     STAT = @roc;
@@ -74,7 +73,7 @@ elseif strcmp(modelType, 'LinSVM probabilistic classification')
     PNAME = {'C'};
     HYPO = [HYPlog_(:)];
     HYP = [10];
-    TRAIN = @(X, Y, P) svmtrain(Y, X, ['-s 0 -t 0 -c 1 -n' ' ' num2str(P(1)) ' '  '-b 1 -q']);
+    TRAIN = @(X, Y, P) svmtrain(Y, X, ['-s 0 -t 0 -c' ' ' num2str(P(1)) ' '  '-b 1 -q']);
     TEST = @LSVC_TEST_PROB;
     LAB_CONV = @LAB_CONV2;
     STAT = @roc;
@@ -84,7 +83,7 @@ elseif strcmp(modelType, 'LinSVM regression')
     PNAME = {'Nu'};
     HYPO = [HYP01_(:)];
     HYP = [0.5];
-    TRAIN = @(X, Y, P) svmtrain(Y, X, ['-s 4 -t 0 -c 1 -n' ' ' num2str(P(1)) ' '  '-b 0 -q']);
+    TRAIN = @(X, Y, P) svmtrain(Y, X, ['-s 4 -t 0 -n' ' ' num2str(P(1)) ' '  '-b 0 -q']);
     TEST = @LSVC_TEST;
     STAT = @(Y, YPRED, varargin) corr(Y, YPRED, 'tail', 'right'); 
 %     COEF = @(M) M.SVs' * M.sv_coef;

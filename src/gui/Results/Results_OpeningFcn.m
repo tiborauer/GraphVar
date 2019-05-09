@@ -30,6 +30,7 @@ axis off
 axis image 
 
 set(hObject,'Units','Pixels');
+set(findall(hObject, '-property', 'FontSize'), 'FontUnits', 'pixels', 'FontSize', 11);
 handles.startSize = get(hObject,'Position');
 
 load(fullfile(workspacePath,'Workspace.mat'));

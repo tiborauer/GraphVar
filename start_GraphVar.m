@@ -36,7 +36,7 @@ addpath(genpath(source_path))
 workspace_path = [root_path 'workspaces'];
 
 fprintf('Welcome to GraphVar\n')
-fprintf('Release= 2.01b \n')
+fprintf('Release= 2.02 \n')
 fprintf('GraphVar 1.00 was developed by Johann Kruschwitz*, David List*, L. Waller, and Mikael Rubinov; *equal contribution\n')
 fprintf('GraphVar 2.00 was developed by L. Waller*, Anastasia Brovkin*, L. Dorfschmidt*, D. Bdzok* and Johann Kruschwitz*; *equal contribution\n')
 fprintf('Division of Mind and Brain Research, Department for Psychiatry, Charite Berlin, Germany\n')
@@ -49,7 +49,7 @@ fprintf('Citing Information:\n')
 fprintf('If you think GraphVar is useful for your work, citing it in your paper would be greatly appreciated.\n')
 fprintf('Please always cite also the first GraphVar publication. i.e., Kruschwitz et al (2015) and Waller&Brovkin et al (2018).\n')
 fprintf('Reference: Kruschwitz JD, List D, Waller L, Rubinov M, Walter H, GraphVar: A user-friendly toolbox for comprehensive graph analyses of functional brain connectivity, Journal of Neuroscience Methods (2015), http://dx.doi.org/10.1016/j.jneumeth.2015.02.021 \n')
-fprintf('Reference: Waller L, Brovkin A, Dorfschmidt L, Bzdok D, Walter H, Kruschwitz J, GraphVar 2.0: A user-friendly toolbox for machine learning on functional brain connectivity measures, Journal of Neuroscience Methods (2018)')
+fprintf('Reference: Waller L, Brovkin A, Dorfschmidt L, Bzdok D, Walter H, Kruschwitz J, GraphVar 2.0: A user-friendly toolbox for machine learning on functional brain connectivity measures, Journal of Neuroscience Methods (2018), https://doi.org/10.1016/j.jneumeth.2018.07.001')
 
 
 Welcome();

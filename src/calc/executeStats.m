@@ -1,4 +1,4 @@
-%  This file is part of GraphVar.
+% %  This file is part of GraphVar.
 % 
 %  Copyright (C) 2016 Lea Waller 
 % 
@@ -286,7 +286,7 @@ for type = 1:4
                                      NF(:, CHUNK, :), ...
                                      B(:, CHUNK), ...
                                      NB(:, CHUNK, :), ...
-                                     SE(:, CHUNK)] = RFUN(Y_(:, CHUNK), nRandom_);
+                                     ] = RFUN(Y_(:, CHUNK), nRandom_); % originally: SE(:, CHUNK)] = RFUN(Y_(:, CHUNK), nRandom_);
                                 case 'randNW'
                                     YR = cat(3, Y_(:, CHUNK), zeros([size(Y_(:, CHUNK)), nRandom_]));
                                     for iRandomize = 1:nRandom_
@@ -688,7 +688,7 @@ function WRITE(iThres, iFunc, FUNC, ...
         end
 
         save(fullfile(resultsPath, 'CorrResults', ...
-            FileNames{iThres, iFunc, k, 1}), '-struct', 'Result');
+            FileNames{iThres, iFunc, k, 1}), '-struct', 'Result', '-v7.3');
     end
 end
 

@@ -321,12 +321,12 @@ elseif  any(regexp(Result.modelType, 'regression$'))
                   
                 case 'Histogram (Permutation Performance)'  % set same for Regression and Classification 
                   cla reset               
-                  [PVAL, MET, MET_perm] =  histogram(handles, featurelist, Result.R, [], Result.RR, [], 'blue', 'c', ...
+                  [PVAL, MET, MET_perm] =  histogram(handles, featurelist, Result.R .^ 2, [], Result.RR.^ 2, [], 'blue', 'c', ...
                           Result.nRandom, Result.modelType, var, Result.var_case, thresh, Result.NXLAB);
                           legend({ 'Full Model (Distribution)',  sprintf('Actual Metric P-Val (Full Model): %0.3g', PVAL), 'Significance Threshold (Full Model)', 'Actual Metric (Full Model)' });  
                               if ~isempty(Result.NXLAB) 
                                hold on 
-                          [PVAL2, MET2, MET_perm2] =   histogram(handles, featurelist, Result.RC, [], Result.RRC, [], 'red', 'm', ...
+                          [PVAL2, MET2, MET_perm2] =   histogram(handles, featurelist, Result.RC.^ 2, [], Result.RRC.^ 2, [], 'red', 'm', ...
                                    Result.nRandom, Result.modelType, var, Result.var_case, thresh, Result.NXLAB);
                                
                                 legend({ 'Full Model (Distribution)',  sprintf('Actual Metric P-Val (Full Model): %0.3g', PVAL)      , 'Significance Threshold (Full Model)', 'Actual Metric (Full Model)', ...
@@ -1125,7 +1125,7 @@ if  any(regexp(modelType, 'classification$'))
          
     end
 else % regression 
-      xlim ([0 1]);
+      %xlim ([0 1]);
       xlab = xlabel('R Squared'); 
       title('Regression performance (permutation distribution)');
       XL = get(gca, 'XLim');
