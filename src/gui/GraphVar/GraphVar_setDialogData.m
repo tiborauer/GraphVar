@@ -117,7 +117,7 @@ end
 set(handles.r2z_check,'Value',dialogData.R2Z)
 set(handles.ConnectivityThr_Check,'Value',dialogData.ConnectivityThr_bool)
 if dialogData.ConnectivityThr_bool
-    thresh = cellstr(num2str(dialogData.ConnectivityThr,'%f'));
+    thresh = cellstr(sprintf('%g',dialogData.ConnectivityThr));
     [~, thresh] = strtok(thresh,'.');
     thresh_Box = get(handles.ConnectivityThr_Listbox,'String');
     [~,loc] = ismember(thresh,thresh_Box);
